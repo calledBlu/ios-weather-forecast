@@ -17,6 +17,10 @@
 		C79C8D0025ADDDF300EEE3F1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C79C8CFE25ADDDF300EEE3F1 /* LaunchScreen.storyboard */; };
 		C79C8D0B25ADDDF400EEE3F1 /* WeatherForecastTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8D0A25ADDDF400EEE3F1 /* WeatherForecastTests.swift */; };
 		C79C8D1625ADDDF400EEE3F1 /* WeatherForecastUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79C8D1525ADDDF400EEE3F1 /* WeatherForecastUITests.swift */; };
+		F021704B29C0282600812122 /* DataFetchingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F021704729C0036100812122 /* DataFetchingModel.swift */; };
+		F08A26C429BFFEEE006D6ABF /* CurrentWeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08A26C329BFFEEE006D6ABF /* CurrentWeatherModel.swift */; };
+		F0ADB03429C04BDB00DE8331 /* CommonWeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0ADB03329C04BDB00DE8331 /* CommonWeatherModel.swift */; };
+		F0BB138E29C0496F001A96A2 /* FiveDaysWeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BB138D29C0496F001A96A2 /* FiveDaysWeatherModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +57,10 @@
 		C79C8D1125ADDDF400EEE3F1 /* WeatherForecastUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WeatherForecastUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C79C8D1525ADDDF400EEE3F1 /* WeatherForecastUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherForecastUITests.swift; sourceTree = "<group>"; };
 		C79C8D1725ADDDF400EEE3F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F021704729C0036100812122 /* DataFetchingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataFetchingModel.swift; sourceTree = "<group>"; };
+		F08A26C329BFFEEE006D6ABF /* CurrentWeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherModel.swift; sourceTree = "<group>"; };
+		F0ADB03329C04BDB00DE8331 /* CommonWeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonWeatherModel.swift; sourceTree = "<group>"; };
+		F0BB138D29C0496F001A96A2 /* FiveDaysWeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiveDaysWeatherModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,6 +152,10 @@
 		F08A26BF29BF0136006D6ABF /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				F08A26C329BFFEEE006D6ABF /* CurrentWeatherModel.swift */,
+				F0BB138D29C0496F001A96A2 /* FiveDaysWeatherModel.swift */,
+				F0ADB03329C04BDB00DE8331 /* CommonWeatherModel.swift */,
+				F021704729C0036100812122 /* DataFetchingModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -306,6 +318,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F021704B29C0282600812122 /* DataFetchingModel.swift in Sources */,
+				F0BB138E29C0496F001A96A2 /* FiveDaysWeatherModel.swift in Sources */,
+				F0ADB03429C04BDB00DE8331 /* CommonWeatherModel.swift in Sources */,
+				F08A26C429BFFEEE006D6ABF /* CurrentWeatherModel.swift in Sources */,
 				C79C8CF825ADDDF200EEE3F1 /* ViewController.swift in Sources */,
 				C79C8CF425ADDDF200EEE3F1 /* AppDelegate.swift in Sources */,
 				C79C8CF625ADDDF200EEE3F1 /* SceneDelegate.swift in Sources */,
@@ -486,7 +502,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = WeatherForecast/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -505,7 +521,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = WeatherForecast/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
