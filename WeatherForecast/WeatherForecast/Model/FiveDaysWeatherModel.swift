@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - FiveDaysWeatherModel
-struct FiveDaysWeatherModel: Codable {
+struct FiveDaysWeatherModel: Decodable {
     let cod: String
     let message, cnt: Int
     let list: [List]
@@ -16,7 +16,7 @@ struct FiveDaysWeatherModel: Codable {
 }
 
 // MARK: - City
-struct City: Codable {
+struct City: Decodable {
     let id: Int
     let name: String
     let coord: Coord
@@ -25,7 +25,7 @@ struct City: Codable {
 }
 
 // MARK: - List
-struct List: Codable {
+struct List: Decodable {
     let dt: Int
     let main: Main
     let weather: [Weather]
@@ -45,7 +45,7 @@ struct List: Codable {
 }
 
 // MARK: - Rain
-struct Rain: Codable {
+struct Rain: Decodable {
     let the3H: Double
 
     enum CodingKeys: String, CodingKey {

@@ -8,19 +8,19 @@
 import Foundation
 
 // MARK: - Coord
-struct Coord: Codable {
+struct Coord: Decodable {
     let lon, lat: Double
 }
 
 // MARK: - Weather
-struct Weather: Codable {
+struct Weather: Decodable {
     let id: Int
     let main: MainEnum
     let description: Description
     let icon: String
 }
 
-enum Description: String, Codable {
+enum Description: String, Decodable {
     case brokenClouds = "broken clouds"
     case clearSky = "clear sky"
     case fewClouds = "few clouds"
@@ -29,39 +29,39 @@ enum Description: String, Codable {
     case scatteredClouds = "scattered clouds"
 }
 
-enum MainEnum: String, Codable {
+enum MainEnum: String, Decodable {
     case clear = "Clear"
     case clouds = "Clouds"
     case rain = "Rain"
 }
 
 // MARK: - Wind
-struct Wind: Codable {
+struct Wind: Decodable {
     let speed: Double
     let deg: Int
     let gust: Double?
 }
 
 // MARK: - Clouds
-struct Clouds: Codable {
+struct Clouds: Decodable {
     let all: Int
 }
 
 // MARK: - Sys
-struct Sys: Codable {
+struct Sys: Decodable {
     let type, id: Int?
     let country: String?
     let sunrise, sunset: Int?
     let pod: Pod?
 }
 
-enum Pod: String, Codable {
+enum Pod: String, Decodable {
     case d = "d"
     case n = "n"
 }
 
 // MARK: - Main
-struct Main: Codable {
+struct Main: Decodable {
     let temp, feelsLike, tempMin, tempMax: Double
     let pressure, humidity: Int
     let seaLevel, grndLevel: Int?
