@@ -7,13 +7,17 @@
 
 import Foundation
 
-enum WeatherURL {
-    private static let baseURL = "https://api.openweathermap.org/data/2.5/"
+enum WeatherURL: String {
+    private static let baseURL = "https://api.openweathermap.org"
     private static let measurementUnit = "metric"
     private static let language = "kr"
+    
+    case data = "data/2.5"
+    case icon = "img/wn"
 
     static func make(at coordinate: CurrentCoordinate, weatherRange: WeatherRange) throws -> URL {
         var components = URLComponents(string: baseURL)
+        components?.path.append(data.rawValue)
         components?.path.append(weatherRange.description)
         components?.queryItems = [
             URLQueryItem(name: "lat", value: "\(coordinate.latitude)"),
@@ -29,8 +33,18 @@ enum WeatherURL {
         
         return url
     }
+    
+    static func make(icon: String) throws -> URL {
+        var components = URLComponents(string: baseURL)
+        components?.path.append(icon.rawValue)
+        components
+    }
 
     static func request(for weather: WeatherRange, at coordinate: CurrentCoordinate) -> URLRequest? {
         return try? URLRequest(url: make(at: coordinate, weatherRange: weather))
+    }
+    
+    static func request(icon: String) -> URLRequest? {
+        
     }
 }

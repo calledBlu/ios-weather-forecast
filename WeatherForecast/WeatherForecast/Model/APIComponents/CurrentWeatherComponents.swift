@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CurrentWeatherComponents: WeatherComposable {
+struct CurrentWeatherComponents: WeatherComposable, WeatherData {
     static var weatherRange: WeatherRange = .current
 
     let name: String

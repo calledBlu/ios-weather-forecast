@@ -14,7 +14,7 @@ struct ForecastWeatherComponents: WeatherComposable {
     let city: City
 }
 
-struct WeatherInformation: Decodable {
+struct WeatherInformation: Decodable, WeatherData {
     let weather: [Weather]
     let numericalInformation: NumericalWeatherInformation
     let wind: Wind

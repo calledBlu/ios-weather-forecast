@@ -8,15 +8,42 @@ import UIKit
 import CoreLocation
 
 class ViewController: UIViewController {
-    private let locationManager = CLLocationManager()
+    private let locationManager = LocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        locationManager.delegate = self
+    }
+    
+}
+
+class LocationManager: NSObject {
+    static let geoCoder = CLGeocoder()
+    static let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ko_KR")
+        formatter.dateFormat = "MM/dd(EE) HH"
+        return formatter
+    }()
+    
+    let locationManager = CLLocationManager()
+    var timeStamp: Date?
+    var coordinate: CLLocation?
+    
+    func date() -> String {
+        return Self.dateFormatter.string(from: timeStamp!)
+    }
+    
+    func address() -> String {
+        var address = ""
+        Self.geoCoder.reverseGeocodeLocation(coordinate!) { places, error in
+            guard let place = places?.first else { return }
+            address = place.administrativeArea! + " " + place.thoroughfare!
+        }
+        return address
     }
 }
 
-extension ViewController: CLLocationManagerDelegate {
+extension LocationManager: CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         switch manager.authorizationStatus {
         case .authorizedWhenInUse, .authorizedAlways:
@@ -27,21 +54,8 @@ extension ViewController: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.first else {
-            return
-        }
-
-        let latitude = location.coordinate.latitude
-        let longitude = location.coordinate.longitude
-        let coordinate = CurrentCoordinate(latitude: latitude, longitude: longitude)
-        let geocoder = CLGeocoder()
-        
-        Task {
-            let _ = try await WeatherParser<CurrentWeatherComponents>.parse(at: coordinate)
-            let _ = try await WeatherParser<ForecastWeatherComponents>.parse(at: coordinate)
-            let placemark = try await geocoder.reverseGeocodeLocation(location)
-            let address = placemark.description.components(separatedBy: ", ")[1]
-        }
+        coordinate = locations.first
+        timeStamp = locations.first?.timestamp
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
