@@ -11,12 +11,15 @@ enum URLService: String {
     case data = "data/2.5/"
     case icon = "img/wn/"
 
-    private static let baseURL = "https://api.openweathermap.org/"
+    //TODO: 중복구간이 많은 baseURL - URLComponent를 더 활용해 url 구성요소 세분화 필요
+    private static let baseURLforData = "https://api.openweathermap.org/"
+    private static let baseURLforIcon = "https://openweathermap.org/"
     private static let measurementUnit = "metric"
     private static let language = "kr"
 
+    //TODO: 마찬가지로, 가능하다면 분기처리를 통해 두 makeURL함수 통합or정리
     static func makeDataURL(at coordinate: CurrentCoordinate, weatherRange: WeatherRange) throws -> URL {
-        var components = URLComponents(string: baseURL)
+        var components = URLComponents(string: baseURLforData)
         components?.path.append(data.rawValue)
         components?.path.append(weatherRange.description)
         components?.queryItems = [
@@ -35,9 +38,9 @@ enum URLService: String {
     }
 
     static func makeIconURL(with iconCode: String) throws -> URL {
-        var components = URLComponents(string: baseURL)
+        var components = URLComponents(string: baseURLforIcon)
         components?.path.append(icon.rawValue)
-        components?.path.append("\(iconCode).png")
+        components?.path.append("\(iconCode)@2x.png")
 
         guard let url = components?.url else {
             throw WeatherNetworkError.invalidURL

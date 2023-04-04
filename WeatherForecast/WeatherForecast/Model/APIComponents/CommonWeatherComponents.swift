@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 struct CurrentCoordinate: Decodable {
     let latitude, longitude: Double
@@ -13,6 +14,12 @@ struct CurrentCoordinate: Decodable {
     enum CodingKeys: String, CodingKey {
         case latitude = "lat"
         case longitude = "lon"
+    }
+    
+    //MARK: 이니셜라이저 추가 - 불가피하게 입출력 타입이 CLLocation 또는 CurrentLocation인 경우가 많아 변환 용이하게 하기 위함 && 그 때마다 memberwise생성자자를 쓰기엔 불필요한 라인이 많아져서 새로 정의
+    init(of location: CLLocation) {
+        self.latitude = location.coordinate.latitude
+        self.longitude = location.coordinate.longitude
     }
 }
 

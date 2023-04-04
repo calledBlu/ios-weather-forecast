@@ -31,6 +31,7 @@ final class ForecastWeatherCell: UICollectionViewCell {
         super.prepareForReuse()
         timeLabel.text = nil
         temperatureLabel.text = nil
+        icon.image = nil
     }
     
     private func configureLayout() {
@@ -52,11 +53,13 @@ final class ForecastWeatherCell: UICollectionViewCell {
             temperatureLabel.trailingAnchor.constraint(equalTo: icon.leadingAnchor, constant: -20)
         ])
 
+        //MARK: 레이블이 좌측으로 찌그러진 원인 == 2x크기 이미지로 교체하면서 대왕너비 이슈가 발생 => 임시로 이미지뷰의 가로세로가 일치하도록 제약 추가
         icon.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             icon.heightAnchor.constraint(equalTo: self.heightAnchor),
             icon.leadingAnchor.constraint(equalTo: temperatureLabel.trailingAnchor, constant: 20),
-            icon.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20)
+            icon.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
+            icon.widthAnchor.constraint(equalTo: icon.heightAnchor)
         ])
     }
 }

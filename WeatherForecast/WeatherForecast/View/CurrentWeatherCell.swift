@@ -13,13 +13,7 @@ final class CurrentWeatherCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.addSubview(view)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            view.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            view.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            view.heightAnchor.constraint(equalTo: self.heightAnchor)
-        ])
+        configureLayout()
     }
     
     required init?(coder: NSCoder) {
@@ -29,5 +23,15 @@ final class CurrentWeatherCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         view.stackView.subviews.forEach { ($0 as? UILabel)?.text = nil }
+    }
+    
+    private func configureLayout() {
+        self.addSubview(view)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            view.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            view.heightAnchor.constraint(equalTo: self.heightAnchor)
+        ])
     }
 }

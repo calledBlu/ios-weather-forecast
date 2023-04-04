@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 struct WeatherParser<T: WeatherComposable> {
+    //TODO: URLService에서와 마찬가지로, 제네릭 및 중복로직 문제 해결을 위한 리팩토링 필요 (타입 분리 or 분기처리 로직 추가)
     static func parseWeatherData(at coordinate: CurrentCoordinate) async throws -> T {
         guard var request = requestData(for: T.weatherRange, at: coordinate) else {
             throw WeatherNetworkError.invalidRequest
@@ -35,6 +36,7 @@ struct WeatherParser<T: WeatherComposable> {
         return weatherIcon
     }
     
+    //TODO: 위와 마찬가지로, 제네릭 및 중복로직 문제 해결을 위한 리팩토링 필요 (타입 분리 or 분기처리 로직 추가)
     static func requestData(for weather: WeatherRange, at coordinate: CurrentCoordinate) -> URLRequest? {
         return try? URLRequest(url: URLService.makeDataURL(at: coordinate, weatherRange: weather))
     }
