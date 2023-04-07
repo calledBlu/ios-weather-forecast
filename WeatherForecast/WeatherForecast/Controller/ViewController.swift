@@ -41,12 +41,13 @@ class ViewController: UIViewController {
     }
     
     private func configureAutoLayout() {
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            collectionView.widthAnchor.constraint(equalTo: view.widthAnchor)
-        ])
+//        collectionView.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+//            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+//            collectionView.widthAnchor.constraint(equalTo: view.widthAnchor)
+//        ])
+        collectionView.frame = view.frame
     }
 }
 
