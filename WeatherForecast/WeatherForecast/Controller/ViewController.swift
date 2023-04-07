@@ -14,9 +14,16 @@ class ViewController: UIViewController {
     private var userAddress: String?
     
     private let collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
+        var configuration = UICollectionLayoutListConfiguration(appearance: .grouped)
+        configuration.backgroundColor = .clear
+        configuration.headerMode = .supplementary
+        let layout = UICollectionViewCompositionalLayout.list(using: configuration)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        let image = UIImage(named: "bgImage")
+        let imageView = UIImageView()
+        imageView.image = image
+        imageView.contentMode = .scaleAspectFill
+        collectionView.backgroundView = imageView
         return collectionView
     }()
     
@@ -45,15 +52,15 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSizeMake(view.frame.width, 100)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSizeMake(view.frame.width, 70)
-    }
-}
+//extension ViewController: UICollectionViewDelegateFlowLayout {
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+//        return CGSizeMake(view.frame.width, 100)
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        return CGSizeMake(view.frame.width, 70)
+//    }
+//}
 
 extension ViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -62,6 +69,7 @@ extension ViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastWeatherCell.id, for: indexPath) as! ForecastWeatherCell
+
         cell.icon.image = forecastWeather?[indexPath.row].iconImage
         cell.timeLabel.text = forecastWeather?[indexPath.row].dataTime
         cell.temperatureLabel.text = forecastWeather?[indexPath.row].temperature

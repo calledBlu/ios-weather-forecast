@@ -30,7 +30,12 @@ final class HeaderView: UIView {
         super.init(frame: frame)
         setupStackView()
         configureLayout()
+        addressLabel.font = .preferredFont(forTextStyle: .body)
+        addressLabel.adjustsFontForContentSizeCategory = true
+        minMaxTemperatureLabel.font = .preferredFont(forTextStyle: .body)
+        minMaxTemperatureLabel.adjustsFontForContentSizeCategory = true
         temperatureLabel.font = .preferredFont(forTextStyle: .title2)
+        temperatureLabel.adjustsFontForContentSizeCategory = true
     }
     
     required init?(coder: NSCoder) {

@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class CurrentWeatherCell: UICollectionViewCell {
+final class CurrentWeatherCell: UICollectionViewListCell {
     static let id = "current"
     let view = HeaderView()
     
@@ -16,9 +16,12 @@ final class CurrentWeatherCell: UICollectionViewCell {
         self.addSubview(view)
         view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            view.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            view.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
             view.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            view.heightAnchor.constraint(equalTo: self.heightAnchor)
+            view.heightAnchor.constraint(equalTo: self.heightAnchor, constant: -10),
+            view.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+//            view.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
+//            view.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor)
         ])
     }
     
