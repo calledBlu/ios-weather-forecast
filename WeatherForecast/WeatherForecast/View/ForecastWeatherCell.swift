@@ -20,7 +20,7 @@ final class ForecastWeatherCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureLayout()
-        temperatureLabel.textAlignment = .right
+        setUpStyle()
     }
     
     required init?(coder: NSCoder) {
@@ -61,5 +61,18 @@ final class ForecastWeatherCell: UICollectionViewCell {
             icon.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
             icon.widthAnchor.constraint(equalTo: icon.heightAnchor)
         ])
+    }
+    
+    private func setUpStyle() {
+        temperatureLabel.textAlignment = .right
+        
+        let borderLayer = CALayer()
+        borderLayer.frame = CGRect(x: 0, y: frame.height, width: frame.width, height: 1)
+        borderLayer.backgroundColor = UIColor.systemGray2.cgColor
+        layer.addSublayer(borderLayer)
+        
+        layer.shadowOffset = CGSize(width: 0.3, height: 0.5)
+        layer.shadowColor = UIColor.systemGray3.cgColor
+        layer.shadowOpacity = 1
     }
 }
