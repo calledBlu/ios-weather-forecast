@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class CurrentWeatherCell: UICollectionViewCell {
+final class CurrentWeatherCell: UICollectionViewListCell {
     static let id = "current"
     let view = HeaderView()
     
@@ -29,5 +29,14 @@ final class CurrentWeatherCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         view.stackView.subviews.forEach { ($0 as? UILabel)?.text = nil }
+    }
+    
+    private func configureCell() {
+        var contentConfig = UIListContentConfiguration.cell()
+        self.contentConfiguration = contentConfig
+        
+        var backgroundConfig = UIBackgroundConfiguration.listGroupedCell()
+        backgroundConfig.backgroundColor = .clear
+        self.backgroundConfiguration = backgroundConfig
     }
 }

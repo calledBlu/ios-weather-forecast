@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ForecastWeatherCell: UICollectionViewCell {
+final class ForecastWeatherCell: UICollectionViewListCell {
     static let id = "forecast"
     let icon: UIImageView = {
         let imageView = UIImageView()
@@ -21,6 +21,8 @@ final class ForecastWeatherCell: UICollectionViewCell {
         super.init(frame: frame)
         configureLayout()
         temperatureLabel.textAlignment = .right
+        self.backgroundColor = .clear
+        configureCell()
     }
     
     required init?(coder: NSCoder) {
@@ -58,5 +60,14 @@ final class ForecastWeatherCell: UICollectionViewCell {
             icon.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
             icon.widthAnchor.constraint(equalTo: icon.heightAnchor)
         ])
+    }
+    
+    private func configureCell() {
+        let contentConfig = UIListContentConfiguration.cell()
+        self.contentConfiguration = contentConfig
+        
+        var backgroundConfig = UIBackgroundConfiguration.listGroupedCell()
+        backgroundConfig.backgroundColor = .clear
+        self.backgroundConfiguration = backgroundConfig
     }
 }

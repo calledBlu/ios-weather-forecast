@@ -14,10 +14,15 @@ class ViewController: UIViewController {
     private var userAddress: String?
     
     private let collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        return collectionView
+        var config = UICollectionLayoutListConfiguration(appearance: .grouped)
+        config.backgroundColor = .clear
+        config.headerMode = .supplementary
+        let layout = UICollectionViewCompositionalLayout.list(using: config)
+        
+        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        view.backgroundView = UIImageView(image: UIImage(systemName: "flame"))
+        view.tintColor = .orange
+        return view
     }()
     
     override func viewDidLoad() {
@@ -42,16 +47,6 @@ class ViewController: UIViewController {
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             collectionView.widthAnchor.constraint(equalTo: view.widthAnchor)
         ])
-    }
-}
-
-extension ViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSizeMake(view.frame.width, 100)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSizeMake(view.frame.width, 70)
     }
 }
 
