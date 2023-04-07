@@ -31,6 +31,10 @@ final class HeaderView: UIView {
         setupStackView()
         configureLayout()
         temperatureLabel.font = .preferredFont(forTextStyle: .title2)
+        
+        self.layer.shadowColor = UIColor.systemBackground.cgColor
+        self.layer.shadowOffset = .init(width: 0.4, height: 0.4)
+        self.layer.shadowOpacity = 1
     }
     
     required init?(coder: NSCoder) {

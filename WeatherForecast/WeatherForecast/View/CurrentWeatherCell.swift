@@ -20,6 +20,11 @@ final class CurrentWeatherCell: UICollectionViewListCell {
             view.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             view.heightAnchor.constraint(equalTo: self.heightAnchor)
         ])
+        //configureCellStyle()
+        view.image.layer.shadowColor = UIColor.black.cgColor
+        view.image.layer.shadowOffset = .zero
+        view.image.layer.shadowOpacity = 1
+        view.image.layer.shadowRadius = 0.1
     }
     
     required init?(coder: NSCoder) {
@@ -31,10 +36,7 @@ final class CurrentWeatherCell: UICollectionViewListCell {
         view.stackView.subviews.forEach { ($0 as? UILabel)?.text = nil }
     }
     
-    private func configureCell() {
-        var contentConfig = UIListContentConfiguration.cell()
-        self.contentConfiguration = contentConfig
-        
+    private func configureCellStyle() {
         var backgroundConfig = UIBackgroundConfiguration.listGroupedCell()
         backgroundConfig.backgroundColor = .clear
         self.backgroundConfiguration = backgroundConfig

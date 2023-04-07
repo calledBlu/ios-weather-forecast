@@ -22,7 +22,7 @@ final class ForecastWeatherCell: UICollectionViewListCell {
         configureLayout()
         temperatureLabel.textAlignment = .right
         self.backgroundColor = .clear
-        configureCell()
+        configureCellStyle()
     }
     
     required init?(coder: NSCoder) {
@@ -62,12 +62,20 @@ final class ForecastWeatherCell: UICollectionViewListCell {
         ])
     }
     
-    private func configureCell() {
+    private func configureCellStyle() {
         let contentConfig = UIListContentConfiguration.cell()
+        self.layer.shadowColor = UIColor.systemBackground.cgColor
+        self.layer.shadowOffset = .init(width: 0.4, height: 0.4)
+        self.layer.shadowOpacity = 0.8
         self.contentConfiguration = contentConfig
         
         var backgroundConfig = UIBackgroundConfiguration.listGroupedCell()
         backgroundConfig.backgroundColor = .clear
         self.backgroundConfiguration = backgroundConfig
+        
+        icon.layer.shadowColor = UIColor.black.cgColor
+        icon.layer.shadowOffset = .zero
+        icon.layer.shadowOpacity = 1
+        icon.layer.shadowRadius = 0.1
     }
 }
