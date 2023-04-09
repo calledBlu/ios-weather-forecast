@@ -33,7 +33,8 @@ class ViewController: UIViewController {
         view.addSubview(collectionView)
         registerCollectionViewCell()
         configureAutoLayout()
-    }
+        configureRefreshControl()
+        }
     
     private func registerCollectionViewCell() {
         collectionView.register(CurrentWeatherCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CurrentWeatherCell.id)
@@ -48,6 +49,17 @@ class ViewController: UIViewController {
 //            collectionView.widthAnchor.constraint(equalTo: view.widthAnchor)
 //        ])
         collectionView.frame = view.frame
+    }
+    
+    private func configureRefreshControl() {
+        let control = UIRefreshControl()
+        control.addTarget(self, action: #selector(refreshCollectionView), for: .valueChanged)
+        collectionView.refreshControl = control
+    }
+    
+    @objc private func refreshCollectionView() {
+        locationManager.requestLocation()
+        collectionView.refreshControl?.endRefreshing()
     }
 }
 
