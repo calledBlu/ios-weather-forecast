@@ -37,8 +37,8 @@ enum WeatherRouter {
             return [
                 URLQueryItem(name: "lat", value: "\(coordinate.latitude)"),
                 URLQueryItem(name: "lon", value: "\(coordinate.longitude)"),
-                URLQueryItem(name: "units", value: String.weatherMeasurementUnit),
-                URLQueryItem(name: "lang", value: String.weatherDataLanguage),
+                URLQueryItem(name: "units", value: Self.optimizedRegion.measurementUnit),
+                URLQueryItem(name: "lang", value: Self.optimizedRegion.rawValue),
                 URLQueryItem(name: "appid", value: Bundle.main.apiKey)
             ]
         case .icon(_):
@@ -72,5 +72,27 @@ extension WeatherRouter {
         request.httpMethod = self.method
         
         return request
+    }
+}
+
+extension WeatherRouter {
+    static private var optimizedRegion: StandardRegion = .korea
+    
+    enum StandardRegion: String {
+        case korea = "kr"
+        case myanmar = "mm"
+        case usa = "us"
+        
+        var measurementUnit: String {
+            switch self {
+            case .korea: return "metric"
+            case .myanmar, .usa: return "imperial"
+            @unknown case _: return "standard"
+            }
+        }
+    }
+    
+    func optimize(to region: StandardRegion) {
+        Self.optimizedRegion = region
     }
 }
