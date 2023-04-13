@@ -9,46 +9,50 @@ import CoreLocation
 
 class ViewController: UIViewController {
     private let locationManager = CLLocationManager()
-    private var currentWeather: WeatherData?
-    private var forecastWeather: [WeatherData]?
-    private var userAddress: String?
-    
-    private let collectionView: UICollectionView = {
-        var config = UICollectionLayoutListConfiguration(appearance: .grouped)
-        config.backgroundColor = .clear
-        config.headerMode = .supplementary
-        let layout = UICollectionViewCompositionalLayout.list(using: config)
-        
-        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        view.backgroundView = UIImageView(image: UIImage(systemName: "flame"))
-        view.tintColor = .orange
-        return view
-    }()
+    var currentWeather: WeatherData?
+    var forecastWeather: [WeatherData]?
+    var userAddress: String?
+    private(set) var collectionView: UICollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        locationManager.delegate = self
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        view.addSubview(collectionView)
-        registerCollectionViewCell()
-        configureAutoLayout()
+        configureLocationManager()
+        setUpCollectionView()
         configureRefreshControl()
-        }
-    
-    private func registerCollectionViewCell() {
-        collectionView.register(CurrentWeatherCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CurrentWeatherCell.id)
-        collectionView.register(ForecastWeatherCell.self, forCellWithReuseIdentifier: ForecastWeatherCell.id)
     }
-    
-    private func configureAutoLayout() {
-//        collectionView.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-//            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-//            collectionView.widthAnchor.constraint(equalTo: view.widthAnchor)
-//        ])
+
+    private func configureLocationManager() {
+        locationManager.delegate = self
+    }
+
+    private func setUpCollectionView() {
+        configureCollectionView()
+        setUpCollectionViewStyle()
+        registerCollectionViewCell()
+        view.addSubview(collectionView)
+        collectionView.dataSource = self
+    }
+
+    private func configureCollectionView() {
+        var configuration = UICollectionLayoutListConfiguration(appearance: .grouped)
+        configuration.backgroundColor = .clear
+        configuration.headerMode = .supplementary
+        let layout = UICollectionViewCompositionalLayout.list(using: configuration)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        self.collectionView = collectionView
+    }
+
+    private func setUpCollectionViewStyle() {
+        let image = UIImage(named: "bgImage")
+        let imageView = UIImageView(image: image)
+        imageView.contentMode = .scaleAspectFill
+        collectionView.backgroundView = imageView
         collectionView.frame = view.frame
+    }
+
+    private func registerCollectionViewCell() {
+        collectionView.register(WeatherHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: WeatherHeaderView.id)
+        collectionView.register(ForecastWeatherCell.self, forCellWithReuseIdentifier: ForecastWeatherCell.id)
     }
     
     private func configureRefreshControl() {
@@ -59,86 +63,6 @@ class ViewController: UIViewController {
     
     @objc private func refreshCollectionView() {
         locationManager.requestLocation()
-        collectionView.refreshControl?.endRefreshing()
     }
 }
 
-extension ViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 40
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ForecastWeatherCell.id, for: indexPath) as! ForecastWeatherCell
-        cell.icon.image = forecastWeather?[indexPath.row].iconImage
-        cell.timeLabel.text = forecastWeather?[indexPath.row].dataTime
-        cell.temperatureLabel.text = forecastWeather?[indexPath.row].temperature
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: CurrentWeatherCell.id, for: indexPath) as! CurrentWeatherCell
-        header.view.image.image = currentWeather?.iconImage
-        header.view.temperatureLabel.text = currentWeather?.temperature ?? "-"
-        header.view.minMaxTemperatureLabel.text = currentWeather?.temperatureString() ?? "-"
-        header.view.addressLabel.text = userAddress ?? "-"
-        return header
-    }
-}
-
-extension ViewController: UICollectionViewDelegate {
-    
-}
-
-extension ViewController: CLLocationManagerDelegate {
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        switch manager.authorizationStatus {
-        case .authorizedWhenInUse, .authorizedAlways:
-            manager.requestLocation()
-        default:
-            manager.requestWhenInUseAuthorization()
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.first else {
-            return
-        }
-        let coordinate = CurrentCoordinate(of: location)
-        
-        Task {
-            updateAddress(to: location) { String(place: $0) }
-            try await updateCurrentWeather(for: coordinate)
-            try await updateForecastWeather(for: coordinate)
-            collectionView.reloadData()
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print(error.localizedDescription)
-    }
-    
-    private func updateCurrentWeather(for location: CurrentCoordinate) async throws {
-        let current = try await WeatherParser<CurrentWeatherComponents>.parseWeatherData(at: location)
-        currentWeather = WeatherData(current: current)
-        try await currentWeather?.convertToImage { self.currentWeather?.iconImage = $0 }
-    }
-    
-    private func updateForecastWeather(for location: CurrentCoordinate) async throws {
-        let forecast = try await WeatherParser<ForecastWeatherComponents>.parseWeatherData(at: location)
-        forecastWeather = forecast.list.map { WeatherData(forecast: $0) }
-        guard let forecastWeather else { return }
-        for (index, weatherData) in forecastWeather.enumerated() {
-            var image: UIImage?
-            try await weatherData.convertToImage { image = $0 }
-            self.forecastWeather?[index].iconImage = image
-        }
-    }
-
-    private func updateAddress(to location: CLLocation, _ completion: @escaping (CLPlacemark) -> String?) {
-        CLGeocoder().reverseGeocodeLocation(location) { places, _ in
-            guard let place = places?.first else { return }
-            self.userAddress = completion(place)
-        }
-    }
-}

@@ -1,5 +1,5 @@
 //
-//  HeaderView.swift
+//  CurrentWeatherView.swift
 //  WeatherForecast
 //
 //  Created by J.E on 2023/04/03.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class HeaderView: UIView {
+final class CurrentWeatherView: UIView {
     let image: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -30,15 +30,14 @@ final class HeaderView: UIView {
         super.init(frame: frame)
         setupStackView()
         configureLayout()
-        temperatureLabel.font = .preferredFont(forTextStyle: .title2)
-        
-        self.layer.shadowColor = UIColor.systemBackground.cgColor
-        self.layer.shadowOffset = .init(width: 0.4, height: 0.4)
-        self.layer.shadowOpacity = 1
+        configureLabelStyle()
     }
     
     required init?(coder: NSCoder) {
-        fatalError("Expected \(Self.self) initialization did fail")
+        super.init(coder: coder)
+        setupStackView()
+        configureLayout()
+        configureLabelStyle()
     }
     
     private func setupStackView() {
@@ -46,7 +45,7 @@ final class HeaderView: UIView {
         stackView.addArrangedSubview(minMaxTemperatureLabel)
         stackView.addArrangedSubview(temperatureLabel)
     }
-    
+
     private func configureLayout() {
         self.addSubview(image)
         self.addSubview(stackView)
@@ -69,5 +68,14 @@ final class HeaderView: UIView {
         ])
         
         image.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+    }
+
+    private func configureLabelStyle() {
+        addressLabel.font = .preferredFont(forTextStyle: .body)
+        addressLabel.adjustsFontForContentSizeCategory = true
+        minMaxTemperatureLabel.font = .preferredFont(forTextStyle: .body)
+        minMaxTemperatureLabel.adjustsFontForContentSizeCategory = true
+        temperatureLabel.font = .preferredFont(forTextStyle: .title1)
+        temperatureLabel.adjustsFontForContentSizeCategory = true
     }
 }

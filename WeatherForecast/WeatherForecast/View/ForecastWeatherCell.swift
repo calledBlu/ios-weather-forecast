@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ForecastWeatherCell: UICollectionViewListCell {
+final class ForecastWeatherCell: UICollectionViewCell {
     static let id = "forecast"
     let icon: UIImageView = {
         let imageView = UIImageView()
@@ -20,19 +20,24 @@ final class ForecastWeatherCell: UICollectionViewListCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureLayout()
-        temperatureLabel.textAlignment = .right
-        self.backgroundColor = .clear
         configureCellStyle()
     }
     
     required init?(coder: NSCoder) {
-        fatalError("Expected \(Self.self) initialization did fail")
+        super.init(coder: coder)
+        configureLayout()
+        configureCellStyle()
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        timeLabel.text = nil
-        temperatureLabel.text = nil
+        clearLabels()
+    }
+    
+    private func clearLabels() {
+        self.subviews.forEach {
+            ($0 as? UILabel)?.text = nil
+        }
     }
     
     private func configureLayout() {
@@ -42,40 +47,50 @@ final class ForecastWeatherCell: UICollectionViewListCell {
 
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            timeLabel.heightAnchor.constraint(equalTo: self.heightAnchor),
             timeLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
-            timeLabel.trailingAnchor.constraint(equalTo: temperatureLabel.leadingAnchor)
+            timeLabel.trailingAnchor.constraint(equalTo: temperatureLabel.leadingAnchor),
+            timeLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         ])
 
         temperatureLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            temperatureLabel.heightAnchor.constraint(equalTo: self.heightAnchor),
             temperatureLabel.leadingAnchor.constraint(equalTo: timeLabel.trailingAnchor),
-            temperatureLabel.trailingAnchor.constraint(equalTo: icon.leadingAnchor, constant: -20)
+            temperatureLabel.trailingAnchor.constraint(equalTo: icon.leadingAnchor, constant: -20),
+            temperatureLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         ])
 
         icon.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            icon.heightAnchor.constraint(equalTo: self.heightAnchor),
+            icon.heightAnchor.constraint(equalToConstant: self.frame.height),
             icon.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
             icon.widthAnchor.constraint(equalTo: icon.heightAnchor)
         ])
     }
     
     private func configureCellStyle() {
-        let contentConfig = UIListContentConfiguration.cell()
-        self.layer.shadowColor = UIColor.systemBackground.cgColor
-        self.layer.shadowOffset = .init(width: 0.4, height: 0.4)
-        self.layer.shadowOpacity = 0.8
-        self.contentConfiguration = contentConfig
-        
-        var backgroundConfig = UIBackgroundConfiguration.listGroupedCell()
-        backgroundConfig.backgroundColor = .clear
-        self.backgroundConfiguration = backgroundConfig
-        
+        self.backgroundConfiguration = .clear()
+        configureIconStyle()
+        configureLabelStyle()
+    }
+    
+    private func configureIconStyle() {
         icon.layer.shadowColor = UIColor.black.cgColor
         icon.layer.shadowOffset = .zero
         icon.layer.shadowOpacity = 1
         icon.layer.shadowRadius = 0.1
+    }
+
+    private func configureLabelStyle() {
+        temperatureLabel.textAlignment = .right
+        timeLabel.font = .preferredFont(forTextStyle: .body)
+        timeLabel.adjustsFontForContentSizeCategory = true
+        temperatureLabel.font = .preferredFont(forTextStyle: .body)
+        temperatureLabel.adjustsFontForContentSizeCategory = true
+    }
+    
+    func updateWeather(_ data: WeatherData?) {
+        self.icon.image = data?.iconImage
+        self.timeLabel.text = data?.dataTime
+        self.temperatureLabel.text = data?.temperature
     }
 }
