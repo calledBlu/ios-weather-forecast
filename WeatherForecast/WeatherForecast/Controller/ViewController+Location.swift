@@ -23,20 +23,27 @@ extension ViewController: CLLocationManagerDelegate {
         guard let location = locations.first else {
             return
         }
-
+        
         let coordinate = CurrentCoordinate(of: location)
-
+        
         updateAddress(to: location)
-
+        
         Task {
-            try await updateCurrentWeather(at: coordinate)
-            try await updateForecastWeather(for: coordinate)
+            do {
+                try await updateCurrentWeather(at: coordinate)
+                try await updateForecastWeather(for: coordinate)
+            } catch {
+                if let problem = (error as? WeatherNetworkError)?.description {
+                    print(problem.description)  //TODO: Alert으로 대체
+                }
+            }
+            
             collectionView.reloadData()
             
             if collectionView.refreshControl?.isRefreshing == true {
                 collectionView.refreshControl?.endRefreshing()
             }
-  }
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -54,27 +61,27 @@ extension ViewController: CLLocationManagerDelegate {
     private func updateForecastWeather(for location: CurrentCoordinate) async throws {
         let forecast = try await WeatherParser.parseData(at: location, type: ForecastWeatherComponents.self)
         forecastWeather = forecast.list.map { WeatherData(forecast: $0) }
-
+        
         guard let forecastWeather else {
             return
         }
-
+        
         for (index, weatherData) in forecastWeather.enumerated() {
             var image: UIImage?
             try await weatherData.convertToImage {
                 image = $0
             }
-
+            
             self.forecastWeather?[index].iconImage = image
         }
     }
-
+    
     private func updateAddress(to location: CLLocation) {
         CLGeocoder().reverseGeocodeLocation(location) { places, _ in
             guard let place = places?.first else {
                 return
             }
-
+            
             self.userAddress = place.formatAddress()
         }
     }
