@@ -21,3 +21,9 @@ extension String {
         self = formattedTemperature + "°"
     }
 }
+
+extension String {
+    var localized: String {
+        return NSLocalizedString(self, comment: "")
+    }
+}

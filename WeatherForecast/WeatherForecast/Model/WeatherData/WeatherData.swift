@@ -35,6 +35,6 @@ struct WeatherData {
     }
     
     func temperatureString() -> String {
-        return "최저 \(minimumTemperature) 최고 \(maximumTemperature)"
+        return "\(I18n.HeaderText.minTemp): \(minimumTemperature) \(I18n.HeaderText.maxTemp): \(maximumTemperature)"
     }
 }

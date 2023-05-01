@@ -1,0 +1,12 @@
+/* 
+  Localizable.strings
+  WeatherForecast
+
+  Created by J.E on 2023/05/01.
+  
+*/
+
+weather = "weather";
+address = "address";
+minTemp = "min";
+maxTemp = "max";

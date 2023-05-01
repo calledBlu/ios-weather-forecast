@@ -1,0 +1,12 @@
+/* 
+  Localizable.strings
+  WeatherForecast
+
+  Created by J.E on 2023/05/01.
+  
+*/
+
+weather = "날씨";
+address = "주소";
+minTemp = "최저";
+maxTemp = "최대";

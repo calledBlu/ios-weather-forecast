@@ -55,7 +55,7 @@ final class WeatherHeaderView: UICollectionViewCell {
     func updateWeather(_ data: WeatherData?, in address: String?) {
         self.headerView.image.image = data?.iconImage
         self.headerView.temperatureLabel.text = data?.temperature ?? "-"
-        self.headerView.minMaxTemperatureLabel.text = data?.temperatureString() ?? "-"
-        self.headerView.addressLabel.text = address ?? "-"
+        self.headerView.minMaxTemperatureLabel.text = data?.temperatureString() ?? "\(I18n.HeaderText.minTemp)·\(I18n.HeaderText.minTemp): -"
+        self.headerView.addressLabel.text = I18n.HeaderText.address + ": " + (address ?? "-")
     }
 }

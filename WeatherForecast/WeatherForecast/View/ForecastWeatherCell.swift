@@ -90,7 +90,10 @@ final class ForecastWeatherCell: UICollectionViewCell {
     
     func updateWeather(_ data: WeatherData?) {
         self.icon.image = data?.iconImage
-        self.timeLabel.text = data?.dataTime
+        self.timeLabel.text = {
+            guard let dataTime = data?.dataTime else { return "" }
+            return dataTime  + " " + I18n.CellText.weather
+        }()
         self.temperatureLabel.text = data?.temperature
     }
 }
